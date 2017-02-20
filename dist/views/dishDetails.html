@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="confusionApp">
+
+
+
+<body>
+
+    <div class="container" ng-app="confusionApp">
+        <div class="row row-content">
+            <div class="col-xs-12" ng-controller="DishDetailController">
+				<div class="media-left media-middle">
+					<a href="#">
+						<img class="media-object" src="{{dish.image}}">
+					</a>
+				</div>
+                <div class="media-body">
+					<h4 class="media-heading"> {{dish.name}}
+						<span ng-if='dish.label=="Hot"' class="label label-danger">{{dish.label}} </span>
+						<span ng-if='dish.label!="Hot"' class="label label-default">{{dish.label}} </span>
+						<span class="badge"> {{dish.price | currency}}</span>
+					</h4>
+					<div> {{dish.description}}</div>
+				</div>
+            </div>
+            <div class="col-xs-9 col-xs-offset-1" ng-controller="DishDetailController">
+				<h4>Reviews for {{dish.name}}</h4>
+				<span>Sort by (author, rating, date):</span> <input type="text" ng-model="OrderBy"></input>
+				<div>
+					<blockquote ng-repeat="comment in dish.comments | orderBy: OrderBy">
+						<p>{{comment.rating}} stars  -  {{comment.comment}}</p>
+						<footer>{{comment.author}} - {{comment.date | date: 'MMM d, yyyy  h:mm a'}}</footer>
+					</blockquote>
+				</div>
+            </div>
+            <div class="col-xs-9 col-xs-offset-1" ng-controller="DishCommentController">
+                    <ul class="list-unstyled">
+
+						<!-- <p>Task 3: Here you include the code to show the live preview of the comment</p>
+						<p>The comment should be shown only when the form contains valid
+						information and is not pristine</p>-->
+						<div  ng-show="!commentForm.$invalid">
+							
+							<blockquote>
+								<p>{{comment.rating}} {{comment.rating>1?"stars":"star"}}  -  {{comment.comment}}</p>
+								<footer>{{comment.author}} - {{comment.date | date: 'MMM d, yyyy  h:mm a'}}</footer>
+							</blockquote>
+						</div>
+						
+                    </ul>
+                <form class="form-horizontal" name="commentForm"
+                		ng-submit="submitComment()" novalidate>
+					<div>
+						<div style="width:200px; float:left"> Your Name </div>
+						<input type="text" name="author" ng-model="comment.author" required></input>
+						<span style="Color:red" ng-if="commentForm.author.$error.required  && !commentForm.author.$pristine">Your name is required.</span>
+					</div>
+					<div>
+						<div style="width:200px; float:left">Number of Stars </div> 
+						
+						<div style="margin-right:20px; float:left" ><input type="radio" value=1 ng-model="comment.rating"></input>1</div>
+						<div style="margin-right:20px; float:left" ><input type="radio" value=2 ng-model="comment.rating"></input>2</div>
+						<div style="margin-right:20px; float:left" ><input type="radio" value=3 ng-model="comment.rating"></input>3</div>
+						<div style="margin-right:20px; float:left" ><input type="radio" value=4 ng-model="comment.rating"></input>4</div>
+						<div style="margin-right:20px;"><input type="radio" value=5 ng-model="comment.rating"></input>5</div>
+					</div>
+					<div>
+						<div style="width:200px; float:left"> Your Comments </div>
+						<textarea style="width:700px; height:200px" name="comment" ng-model="comment.comment" required></textarea>
+						<div style="Color:red" ng-if="commentForm.comment.$error.required  && !commentForm.comment.$pristine">Your comments are required.</div>
+					</div>
+					
+					<input class="btn btn-primary" ng-disabled="commentForm.$invalid" type="submit" value="Submit Comment"></input>
+					<div class="col-xs-12">
+						<button class="btn btn-xs btn-primary pull-right"
+							type="button" ui-sref="app.menu">
+							Back to Menu
+						</button>
+					<div class="media">
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+
+</html>
